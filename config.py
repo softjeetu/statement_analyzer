@@ -3,9 +3,9 @@ BANK_DETAILS = {
         'transaction_date': 0,    		  	  # index of transaction_date column
         'transaction_description': 1,     	  # index of transaction_description column
         'check_no': 2,        			  	  # index of check_no column
-        'withdrawal': 3,        			  # index of withdrawal column
-        'deposit': 4,           			  # index of desposit column
-        'balance': 5            			  # index of balance column        
+        'withdrawal': 4,        			  # index of withdrawal column
+        'deposit': 5,           			  # index of desposit column
+        'balance': 6            			  # index of balance column        
    },
    'HLB': {
         'date': 0,    		  	  			  # index of transaction_date column

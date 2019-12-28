@@ -88,6 +88,7 @@ for transaction in transactions:
             transaction[b_i] = float(str(transaction[b_i]).replace(",", ""))
             transaction[d_i] = float(str(transaction[d_i]).replace(",", ""))
 
+            
             if transaction[w_i] > 0 and transaction[b_i] < 0:
                 if is_negative:
                     # default condition not satisfied so move to debit
@@ -115,7 +116,7 @@ for transaction in transactions:
                     if transaction[w_i] > 0 and transaction[b_i] < 0:
                         is_negative = True
                         transaction.append('Default')
-                        final_result.append(tran)
+                        final_result.append(transaction)
                     
                         continue
                     
@@ -138,8 +139,6 @@ for transaction in transactions:
             is_negative = False
             final_result.append(transaction)
     
-print(final_result)
-exit()
 # method to categorize a particular
 def categorize(particular):
     # tokenizing
@@ -153,7 +152,7 @@ def categorize(particular):
 for transaction in final_result:
     print(transaction)
     # assign category
-    transaction.append(categorize(transaction['particular']))
+    transaction.append(categorize(transaction['credit']))
     
 print(final_result)
 
