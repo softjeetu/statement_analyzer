@@ -23,10 +23,11 @@ headers = []
 
 # loop over all rows
 last_cols_matched = ["Balance", "Baki", float("nan"), 'Hold Amount', 'Late Local Cheque']
+
 #for row in rows:
     #print(row)
     #row_length = len(row)     
-    #if(str(row[row_length - 1]) in last_cols_matched):
+    #if(row[row_length - 1] not in last_cols_matched and pd.isnull(row[row_length - 1]) == True):
         #print(row[row_length - 1])
         #print(type(row[row_length - 1]))
         #headers.append(rows)
@@ -66,6 +67,7 @@ for v_t in valid_transactions:
         transactions[-1][p_i] += v_t[p_i]
 #print(transactions)
 #exit()
+    
 
 # initializing variables
 w_i = config.BANK_DETAILS['OCBC']['withdrawal']  # from BANK_DETAILS
@@ -76,6 +78,9 @@ final_result = []                                # transactions with label assig
 
 # iterate over all transactions
 for transaction in transactions:
+    transaction[w_i] = float(str(transaction[w_i]).replace(",", ""))
+    transaction[b_i] = float(str(transaction[b_i]).replace(",", ""))
+    transaction[d_i] = float(str(transaction[d_i]).replace(",", ""))
     # debit leading to a negative balance
     if type(transaction[w_i]) != 'str' and type(transaction[b_i]) != 'str': 
         if float(transaction[w_i]) > 0 and float(transaction[b_i]) < 0:
@@ -84,7 +89,7 @@ for transaction in transactions:
                 final_result[-1]['type'] = 'Debit'
             
             is_negative = True
-            transaction['type'] = 'Default'
+            transaction.append('Default')
             final_result.append(transaction)
 
             # to avoid last statement of is_negative = False
@@ -94,7 +99,7 @@ for transaction in transactions:
         elif is_negative:
             # default condition met
             if (float(transaction[d_i]) == final_result[-1]['withdrawal']):
-                transaction['type'] = 'Default'
+                transaction.append('Default')
         
             # default condition not met move to debit
             else:
@@ -104,32 +109,32 @@ for transaction in transactions:
                 # now start over from current position
                 if float(transaction[w_i]) > 0 and float(transaction[b_i]) < 0:
                     is_negative = True
-                    transaction['type'] = 'Default'
+                    transaction.append('Default')
                     final_result.append(tran)
                 
                     continue
                 
                 # debit
                 elif float(transaction[w_i]) > 0:
-                    transaction['type'] = 'Debit'
+                    transaction.append('Debit')
                 
                 # credit
                 elif float(transaction[d_i]) > 0:
-                    transaction['type'] = 'Credit'
+                    transaction.append('Credit')
         
         # debit
         elif float(transaction[w_i]) > 0:
-            transaction['type'] = 'Debit'
+            transaction.append('Debit')
         
         # credit
-        elif float(transaction[d_i]) > 0:
-            transaction['type'] = 'Credit'
+        elif transaction[d_i] > 0:
+            transaction.append('Credit')
         
         is_negative = False
         final_result.append(transaction)
     
 print(final_result)
-
+exit()
 # method to categorize a particular
 def categorize(particular):
     # tokenizing
@@ -141,7 +146,10 @@ def categorize(particular):
 
 # iterate over all transactions
 for transaction in final_result:
+    print(transaction)
     # assign category
-    transaction['category'] = categorize(transaction['particular'])
+    transaction.append(categorize(transaction['particular']))
+    
+print(final_result)
 
 
