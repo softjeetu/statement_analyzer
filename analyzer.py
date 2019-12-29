@@ -138,22 +138,7 @@ for transaction in transactions:
             
             is_negative = False
             final_result.append(transaction)
-    
-# method to categorize a particular
-def categorize(particular):
-    # tokenizing
-    word_list = tokenize(particular)
-    
-    # multiple similar statements
-    if keyword in word_list:
-        return category
-
-# iterate over all transactions
-for transaction in final_result:
-    print(transaction)
-    # assign category
-    transaction.append(categorize(transaction['credit']))
-    
 print(final_result)
+exit()
 
 
